@@ -1,8 +1,8 @@
-package rl;
+package pocman;
 
 import javax.swing.JFrame;
 
-import rl.Board;
+import pocman.Board;
 
 import java.awt.EventQueue;
 

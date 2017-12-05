@@ -1,4 +1,4 @@
-package rl;
+package pocman;
 
 interface Valuable {
     // use richest built-in numeric type

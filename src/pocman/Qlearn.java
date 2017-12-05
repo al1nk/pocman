@@ -1,6 +1,5 @@
-package rl;
+package pocman;
 
-import java.util.ArrayList;
 import java.util.Hashtable;
 
 public class Qlearn {
