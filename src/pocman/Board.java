@@ -40,12 +40,12 @@ public class Board extends JPanel implements ActionListener {
     Ghost[] ghosts; 
     private int world_age = 0;
     private final int maxghosts = 12;
-    private int nrofghosts = 1;
+    private int nrofghosts = 2;
     private boolean dying = false;
     private boolean inside_game = false;
-    private int fq_showScore = 1000;
+    private int fq_showScore = 10000;
     public int x_food = -1, y_food = -1;    private boolean ingame = false;
-    public int score = 0;    
+    public static int score = 0;
     public int reqdx, reqdy;
     
 
@@ -165,11 +165,13 @@ public class Board extends JPanel implements ActionListener {
     private void playGame(Graphics2D g2d) {
 
         if (dying) {
+            updateScore(-1);
             death();
         } else {
         	// move pacman
         	pc.move();
-        	
+        	updateScore(1);
+
         	if(g2d != null) pc.draw(g2d);        	
             dying = pc.restart;
             
@@ -263,7 +265,7 @@ public class Board extends JPanel implements ActionListener {
 
     private void initGame() {        
         initLevel();
-        nrofghosts = 1;
+        //nrofghosts = 1;
     }
 
     private void initLevel() {
@@ -364,6 +366,9 @@ public class Board extends JPanel implements ActionListener {
         Toolkit.getDefaultToolkit().sync();
         g2d.dispose();
         world_age ++;
+
+        pc.set_epsilon(sigmoid((int) (Math.log(world_age)/2-6)));
+
     }
     
     public void playWithoutDisplay() {
@@ -381,8 +386,9 @@ public class Board extends JPanel implements ActionListener {
 	        if((world_age%fq_showScore)==0) {
 	        	inside_game=false;
 	        }
+	        pc.set_epsilon(sigmoid((Math.log((double) world_age)/2-6)));
     	}
-    	System.out.println(world_age+" "+pc.eaten+" "+pc.good+" "+pc.stuck);
+    	System.out.println(world_age+" "+pc.eaten+" "+pc.good+" "+pc.stuck + " " + pc.getEps());
     	pc.reset_state();
     }
 
@@ -448,5 +454,16 @@ public class Board extends JPanel implements ActionListener {
     		if(!inside_game) 
     			playWithoutDisplay();
     	}
+    }
+
+    public static double sigmoid(double x){
+        return 1/(1 + Math.exp(-x));
+    }
+
+    public static void updateScore(int increment){
+        if (increment<0)
+            score = 0;
+        else
+            score += increment;
     }
 }

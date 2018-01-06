@@ -108,7 +108,7 @@ public class Ghost extends Agent{
 	private ArrayList<Tuple<Integer,Integer>> getListCells() {
 		ArrayList<Tuple<Integer,Integer>> list_cells = new ArrayList<Tuple<Integer,Integer>>();
 		
-		double maxdist=100000;
+		double maxdist=1000000;
     	for(Tuple<Integer,Integer> c : neighcells) {
     		double dist = Math.pow(x+c.x_block - b.pc.x,2)
     		            + Math.pow(y+c.y_block - b.pc.y,2);

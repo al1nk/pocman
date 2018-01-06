@@ -1,6 +1,6 @@
 package pocman;
 
-import javax.swing.JFrame;
+import javax.swing.*;
 
 import pocman.Board;
 
@@ -19,7 +19,7 @@ public class GridWorld extends JFrame {
 	private void initUI() {
 		add(new Board());
         setTitle("Pacman");
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setSize(380, 420);
         setLocationRelativeTo(null);
         setVisible(true); 
@@ -27,13 +27,10 @@ public class GridWorld extends JFrame {
 	
     public static void main(String[] args) {
 
-        EventQueue.invokeLater(new Runnable() {
-
-            @Override
-            public void run() {
-                GridWorld ex = new GridWorld();
-                ex.setVisible(true);
-            }
+        EventQueue.invokeLater(() -> {
+            GridWorld ex = new GridWorld();
+            ex.setVisible(true);
         });
+
     }
 }

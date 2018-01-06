@@ -11,7 +11,7 @@ public class Pacman extends Agent {
 	// Variables chooseAction 
 	private int lastState = -1; // etat précédent
 	private int lastAction = -1; // action précédente
-	private boolean use_ia = false;  // utiliser le qlearning ? 
+	private boolean use_ia = true;  // utiliser le qlearning ?
 	private final int base = 5;
 
 	// IA
@@ -25,10 +25,10 @@ public class Pacman extends Agent {
 	public boolean restart = false;
     
 	// possibles récompenses
-	private double r_ghost = -100; // je tombe sur un fantome
-	private double r_food  = 50; // je tombe sur de la nourriture
+	private double r_ghost = -20; // je tombe sur un fantome
+	private double r_food  = 10; // je tombe sur de la nourriture
 	private double r_stuck = -5; // je vais vers un mur
-	private double r_nothing = 0; // je ne fais rien ??
+	private double r_nothing = -1; // je ne fais rien ??
 	
 	// voisinage
     private ArrayList<Tuple<Integer,Integer>> lookcells;
@@ -233,11 +233,14 @@ public class Pacman extends Agent {
 		if((cell_state&b.STATE_BADGUY)!=0) { // trouver un fantome
 			eaten++;
 			reward = r_ghost;
-			// MAJ IA
-			return false;
+			ia.learn(lastState, lastAction, id_state, reward);
+            //ia.sarsa(lastState, lastAction, id_state, id_action, reward);
+            return false;
 			
 		} else if ((cell_state&b.STATE_GOODSTUFF)!=0) { // trouver de la nourriture
 			good++;
+
+			Board.updateScore(100);
 			reward = r_food;
 			b.random_cheese();	
 		}
@@ -249,21 +252,25 @@ public class Pacman extends Agent {
 		}	
 		
 		if (lastState != -1) {
-			// MAJ IA	
+			ia.learn(lastState, lastAction, id_state, reward);
+            //ia.sarsa(lastState, lastAction, id_state, id_action, reward);
+            //printState(id_state);
 		}
-		
-		
-		
-		
-		if(use_ia)
+
+
+		if(use_ia){
 			// choose an action here using qlearn
-			// ...
-			
+			id_action = ia.ChooseAction(id_state);
+			//showAction(id_action);
 			goInDirection(id_action);
-		else { // random direction
+		}
+		else { 
+			// random direction
 			random_move();
 		}
-		
+
+		//printState(id_state);
+
 		lastState = id_state;
 		lastAction = id_action;
 		return true;
@@ -287,7 +294,7 @@ public class Pacman extends Agent {
 		System.out.println("  "+state[3]+" "+state[6]+" "+state[10]);
 		System.out.println("    "+state[7]);
 	}
-	
+
 	private void printState(int state) {
 		int id_state = state;
 		int[] get_state = new int[12];
@@ -298,37 +305,37 @@ public class Pacman extends Agent {
 		printState(get_state);
 	}
 
-	private void showAction(int action) {
+    public double getEps() {
+        return ia.epsilon;
+    }
+
+    static protected String getAction(int action) {
 		switch(action) {
 		  case 0: // N
-			  System.out.println("nord");
-			  break;
+			  return "nord";
 		  case 1: // NE
-			  System.out.println("nord-est");
-			  break;
+              return "nord-est";
 		  case 2: // E
-			  System.out.println("est");
-			  break;
+              return "est";
 		  case 3: // SE
-			  System.out.println("sud-est");
-			  break;
+              return "sud-est";
 		  case 4: // S
-			  System.out.println("sud");
-			  break;
+              return "sud";
 		  case 5: // SW
-			  System.out.println("sud-ouest");
-			  break;
+              return "sud-ouest";
 		  case 6: // W
-			  System.out.println("ouest");
-			  break;
+              return "ouest";
 		  case 7: // NW
-			  System.out.println("nord-ouest");
-			  break;
+              return "nord-ouest";
 		  default:
-			  break;
-			
+		      return "prout";
+
 		}
 	}
+
+	private void showAction(int action){
+	    System.out.print(getAction(action));
+    }
 	
 	private void goInDirection(int action) {
 		switch(action) {
