@@ -13,6 +13,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
@@ -43,10 +47,20 @@ public class Board extends JPanel implements ActionListener {
     private int nrofghosts = 2;
     private boolean dying = false;
     private boolean inside_game = false;
-    private int fq_showScore = 10000;
+    private int fq_showScore = 5000;
     public int x_food = -1, y_food = -1;    private boolean ingame = false;
     public static int score = 0;
     public int reqdx, reqdy;
+
+
+    //Plot Data Management
+    private boolean verbose = false;
+    private int writeOutThreshold = 10000000;
+    private ArrayList<Integer> wAgeIndex = new ArrayList<>(),
+                                deaths = new ArrayList<>(),
+                                cheeses = new ArrayList<>(),
+                                walls = new ArrayList<>();
+
     
 
     /*private final short leveldata[] = {
@@ -370,8 +384,13 @@ public class Board extends JPanel implements ActionListener {
         pc.set_epsilon(sigmoid((int) (Math.log(world_age)/2-6)));
 
     }
-    
-    public void playWithoutDisplay() {
+
+    /**
+     * Play the game fastforward
+     * @param verbose makes the program write out the stats to the console
+     *                no write out if enabled
+     */
+    public void playWithoutDisplay(boolean verbose) {
     	inside_game = true;
     	while(inside_game) {
 	    	for(int i=0; i<nrofghosts; i++)
@@ -382,13 +401,44 @@ public class Board extends JPanel implements ActionListener {
 	        } else {
 	            showIntroScreen(null);
 	        }
+
 	        world_age ++;
 	        if((world_age%fq_showScore)==0) {
 	        	inside_game=false;
 	        }
+
+	        //Writing stats to file if needed
+	        String method = pc.getIAMethodString();
+            if (!verbose && (world_age % writeOutThreshold) == 0) {
+                try {
+                    PrintWriter f = new PrintWriter("/out/" + method + ".pltdt","UTF-8");
+                    f.println(wAgeIndex);
+                    f.println(deaths);
+                    f.println(cheeses);
+                    f.println(walls);
+                    f.close();
+                } catch (FileNotFoundException | UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+
+                do_repaint = !do_repaint;
+                inside_game = false;
+        }
+
+	        //Updating epsilon parameter with a custom progression
 	        pc.set_epsilon(sigmoid((Math.log((double) world_age)/2-6)));
     	}
-    	System.out.println(world_age+" "+pc.eaten+" "+pc.good+" "+pc.stuck + " " + pc.getEps());
+
+
+
+    	if (verbose) System.out.println(world_age+" "+pc.eaten+" "+pc.good+" "+pc.stuck + " " + pc.getEps());
+    	else {
+            //Writing stats to arrays
+            wAgeIndex.add(world_age);
+            deaths.add(pc.eaten);
+            cheeses.add(pc.good);
+            walls.add(pc.stuck);
+        }
     	pc.reset_state();
     }
 
@@ -452,7 +502,7 @@ public class Board extends JPanel implements ActionListener {
     		repaint();
     	} else {
     		if(!inside_game) 
-    			playWithoutDisplay();
+    			playWithoutDisplay(verbose);
     	}
     }
 

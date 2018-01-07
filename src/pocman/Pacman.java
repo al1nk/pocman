@@ -11,11 +11,17 @@ public class Pacman extends Agent {
 	// Variables chooseAction 
 	private int lastState = -1; // etat précédent
 	private int lastAction = -1; // action précédente
-	private boolean use_ia = true;  // utiliser le qlearning ?
+	private boolean use_ia = false;  // utiliser le qlearning ?
 	private final int base = 5;
 
 	// IA
     private Qlearn ia;
+    /**
+     * IA Type:
+     *  true = Q-Learning
+     *  false = SARSA
+     */
+    private boolean iaType = false;
     
     // Scores
 	public int good = 0;
@@ -233,8 +239,8 @@ public class Pacman extends Agent {
 		if((cell_state&b.STATE_BADGUY)!=0) { // trouver un fantome
 			eaten++;
 			reward = r_ghost;
-			ia.learn(lastState, lastAction, id_state, reward);
-            //ia.sarsa(lastState, lastAction, id_state, id_action, reward);
+			if (iaType) ia.learn(lastState, lastAction, id_state, reward);
+            else    ia.learn(lastState, lastAction, id_state, id_action, reward);
             return false;
 			
 		} else if ((cell_state&b.STATE_GOODSTUFF)!=0) { // trouver de la nourriture
@@ -252,8 +258,8 @@ public class Pacman extends Agent {
 		}	
 		
 		if (lastState != -1) {
-			ia.learn(lastState, lastAction, id_state, reward);
-            //ia.sarsa(lastState, lastAction, id_state, id_action, reward);
+			if (iaType) ia.learn(lastState, lastAction, id_state, reward);
+            else    ia.learn(lastState, lastAction, id_state, id_action, reward);
             //printState(id_state);
 		}
 
@@ -516,5 +522,11 @@ public class Pacman extends Agent {
 				}
 			}
 		}
+	}
+
+	public String getIAMethodString(){
+		if (use_ia && iaType) return "QLearning";
+		else if (use_ia && !iaType) return "SARSA";
+	    else return "none";
 	}
 }

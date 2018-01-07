@@ -11,7 +11,7 @@ public class Qlearn {
 	public int actions[];
 	public Hashtable< Tuple<Integer,Integer>, Double> q;
 	Random random = new Random(1265);
-	
+
 	// Constructeurs
 	public Qlearn(int[] actions) {
 		this.actions = actions;
@@ -66,12 +66,12 @@ public class Qlearn {
 
         this.q.put(t, ql);
 	}
-	
-	public void sarsa(int st, int at, int st1, int at1, double r1){
-		Tuple <Integer,Integer> t1 = new Tuple<>(st1, at1);
-		Tuple <Integer,Integer> t = new Tuple<>(st, at);
-		double ql = this.q.getOrDefault(t, 0d)
+
+    public void learn(int st, int at, int st1, int at1, double r1){
+        Tuple <Integer,Integer> t1 = new Tuple<>(st1, at1);
+        Tuple <Integer,Integer> t = new Tuple<>(st, at);
+        double ql = this.q.getOrDefault(t, 0d)
                 + this.alpha * (r1 + this.gamma*this.q.getOrDefault(t1, 0d) - this.q.getOrDefault(t, 0d));
-		q.put(t, ql); 
-	}
+        q.put(t, ql);
+    }
 }
