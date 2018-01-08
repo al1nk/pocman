@@ -30,7 +30,7 @@ public class Qlearn {
 
 
 	    int bestActIndex = -1;
-	    double actionProb = -1e10;
+	    double actionProb = -1e10; //Because we have negative data points
 
         for (int action : this.actions){
             double qAct = this.q.getOrDefault(new Tuple<>(state, action), .0);
@@ -67,11 +67,11 @@ public class Qlearn {
         this.q.put(t, ql);
 	}
 
-    public void learn(int st, int at, int st1, int at1, double r1){
+    public void learn(int st, int at, int st1, int at1, double r){
         Tuple <Integer,Integer> t1 = new Tuple<>(st1, at1);
         Tuple <Integer,Integer> t = new Tuple<>(st, at);
         double ql = this.q.getOrDefault(t, 0d)
-                + this.alpha * (r1 + this.gamma*this.q.getOrDefault(t1, 0d) - this.q.getOrDefault(t, 0d));
+                + this.alpha * (r + this.gamma*this.q.getOrDefault(t1, 0d) - this.q.getOrDefault(t, 0d));
         q.put(t, ql);
     }
 }
