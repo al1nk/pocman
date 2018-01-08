@@ -10,8 +10,7 @@ On commence donc par développer l'implémentation de l'intelligence artificiell
 ## 1 - Implémentation de l'intelligence artificielle  
 
 La majeure partie de l'implémentation se fait dans une classe `QLearn`. L'objectif de cette classe est de déterminer la meilleure action à effectuer par l'agent (ici PacMan) en fonction de son environnement.  
-On adopte une stratégie ε-greedy : avec une probabilité ε, on choisit la meilleure action à effectuer (et une action au hasard dans l'autre cas). On fait de plus évoluer ε en fonction de l'age du monde à l'aide d'une fonction particulière (on peut la considérer comme un hyperparamètre) : 
-\\[x \to \sigma \left( \frac{ln \left ( x\right )}{2} - 6\right )\\]  
+On adopte une stratégie ε-greedy : avec une probabilité ε, on choisit la meilleure action à effectuer (et une action au hasard dans l'autre cas). On fait de plus évoluer ε en fonction de l'age du monde à l'aide d'une fonction particulière (on peut la considérer comme un hyperparamètre) : \\(x \to \sigma \left( \frac{ln \left ( x\right )}{2} - 6\right )\\), où \\(\sigma \\) est la fonction sigmoïd.
 
 On choisit d'implémenter deux méthodes de mise-à-jour de la fonction Q (l'estimateur de la meilleure action) :
 
