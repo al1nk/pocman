@@ -1,24 +1,21 @@
-Title : PocMan
-Author : Lesmanne Maëlle  
-Alamichel Louise  
-Fares Jean-Marc
+Title : PocMan  
+Author : Lesmanne Maëlle  Alamichel Louise  Fares Jean-Marc
+HTML Header : <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
 # PocMan
 
 ## 0 - Introduction  
 
 La seconde partie du module Info215 se concentre sur l'apprentissage par renforcement, qui, à la différence de l'apprentissage supervisé, nous permet de créer un agent conscient du monde dans lequel il évolue, sans connaitre de stratégies a priori. Ce système d'intelligence artificielle convient parfaitement dans le cadre du développement d'un jeu vidéo.
-Ainsi, comme proposé par le sujet, nous allons écrire un algorithme d'apprentissage par renfocrement ayant pour but de maitriser un jeu PacMan sans connaissances autres que l'environnement.
+Ainsi, comme proposé par le sujet, nous allons écrire un algorithme d'apprentissage par renforcement ayant pour but de maitriser un jeu PacMan sans connaissances autres que l'environnement.
 
-On commence donc par développer l'implémentation de l'intelligence artificielle, puis l'aggrégation et l'analyse des données issues de la simulation.
+On commence donc par développer l'implémentation de l'intelligence artificielle, puis l'agrégation et l'analyse des données issues de la simulation.
 
 ## 1 - Implémentation de l'intelligence artificielle  
 
 La majeure partie de l'implémentation se fait dans une classe `QLearn`. L'objectif de cette classe est de déterminer la meilleure action à effectuer par l'agent (ici PacMan) en fonction de son environnement.  
-On adopte une stratégie ε-greedy : avec une probabilité ε, on choisit la meilleure action à effectuer (et une action au hasard dans l'autre cas). On fait de plus évoluer ε en fonction de l'age du monde à l'aide d'une fonction particulière (on peut la ocnsidérer comme un hyperparamètre) : 
-\\[
-	x \to \sigma \left( \frac{ln \left ( x\right )}{2} - 6\right )
-\\]  
+On adopte une stratégie ε-greedy : avec une probabilité ε, on choisit la meilleure action à effectuer (et une action au hasard dans l'autre cas). On fait de plus évoluer ε en fonction de l'age du monde à l'aide d'une fonction particulière (on peut la considérer comme un hyperparamètre) : 
+\\(x \to \sigma \left( \frac{ln \left ( x\right )}{2} - 6\right )\\)  
 
 On choisit d'implémenter deux méthodes de mise-à-jour de la fonction Q (l'estimateur de la meilleure action) :
 
@@ -34,13 +31,15 @@ Enfin, pour utiliser les données accumulées, on implémente un mécanisme de c
 ### A - Support
 
 Afin d'analyser le processus d'apprentissage, nous mettons en place un système de sauvegarde des variables représentatives de chaque simulation dans un fichier. On exploite ensuite ces fichiers à l'aide d'un script écrit en Python : ce dernier permet de convertir les chiffres bruts en graphiques dans le format PNG. Nous visualisons les données à l'aide de la bibliothèque Matplotlib.
-On ajoute la possibilité de réduire le bruit des données, afin de lisser le rendu graphique. Pour ce faire, on calcule la moyenne glissante sur le jeu de données que l'on a recueilli, finalement c'est celle-ci que l'on trace.
+On ajoute la possibilité de réduire le bruit des données, afin de lisser le rendu graphique. Pour ce faire, on calcule la moyenne glissante sur le jeu de données que l'on a recueilli, finalement c'est celle-ci que l'on trace.  
 
-![Fig. 1 : Sans débruitage]() ![Fig. 2 : Lissée]()
+   Avant                        |  Après
+   :---------------------------:|:------------------------:
+   ![](./output/not_smoothen.png)|![](./output/smoothen.png)
 
 ### B - Paramètres
 
-Nous avons fait le choix de faire jouer dix millions de parties à notre programme et sauver les indicatuers toutes les cinq mille parties.
+Nous avons fait le choix de faire jouer dix millions de parties à notre programme et sauver les indicateurs toutes les cinq mille parties.
 Nous choisissons de plus de modifier les récompenses données pour réduire l'ampleur des nombres manipulés par le programme :
 
 ```java
@@ -51,7 +50,7 @@ private double r_nothing = -1;
 ```
 
 ### C - Données
-Pour contrôler le progrès de l'apprentissage, nous avons donc reccueilli le nombre de morts, de récompenses et de murs rencontrés, on peut alors tracer un graphique des trois grandeurs en fonction du nombre de parties.
+Pour contrôler le progrès de l'apprentissage, nous avons donc recueilli le nombre de morts, de récompenses et de murs rencontrés, on peut alors tracer un graphique des trois grandeurs en fonction du nombre de parties.
 
 On obtient les graphiques suivants :  
 
@@ -59,10 +58,10 @@ On obtient les graphiques suivants :
 
 ### D - Analyse
 
-Dans le premier cas, on remarque premièrement l'ampleur des parties perdues et des murs rencontrés face au nombre de nouriture gagnées, de plus, il n'y a que relativement peu de fluctuations autour d'une même valeur.
-Dans les cas où l'on utilise l'apprentissage par renfocement, on voit très clairement que le nombre de morts et de murs rencontrés décroit fortement, alors que le nombre de nouritures perçues augmente. On en conclut que l'apprentissage est (très) efficace par rapport a une marche aléatoire.
+Dans le premier cas, on remarque premièrement l'ampleur des parties perdues et des murs rencontrés face au nombre de nourriture gagnées, de plus, il n'y a que relativement peu de fluctuations autour d'une même valeur.
+Dans les cas où l'on utilise l'apprentissage par renforcement, on voit très clairement que le nombre de morts et de murs rencontrés décroit fortement, alors que le nombre de nourritures perçues augmente. On en conclut que l'apprentissage est (très) efficace par rapport a une marche aléatoire.
 De plus, il existe une différence notable entre les méthodes SARSA et Q-Learning, la dernière se montre plus efficace (elle converge vers 40 morts par époque contrairement à 60 pour SASRA, On obtient aussi de meilleurs scores pour les autres indicateurs).
 
 ## 3 - Conclusion
 
-Nous avons finalement implanté un algorithme d'apprentissage par renforcement permettant à PacMan de tromper les fantomes sans savoir a priori comment les éviter.
+Nous avons finalement implanté un algorithme d'apprentissage par renforcement permettant à PacMan de tromper les fantômes sans savoir a priori comment les éviter.

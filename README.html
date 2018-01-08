@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+
+	<meta charset="utf-8">
+	<meta name="format" content="complete">
+	<title>PocMan</title>
+	<meta name="author" content="Lesmanne Maëlle  Alamichel Louise  Fares Jean-Marc">
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  <style type="text/css">
+html {
+    /* the line height value of 1.9 is fixed for a line height multiple of 1.4 in the text view */
+    font: normal 93.8%/1.9 serif;
+}
+
+body {
+    font-family: 'Menlo', Helvetica, Georgia, serif;
+    word-wrap: break-word;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    vertical-align: baseline;
+    overflow:hidden;
+    background-color: #f2f2f2;
+    color: #3c3c3c;
+}
+
+/**
+ *
+    Wrappers
+ *
+ */
+
+#wrapper {
+    position: fixed;
+    width: 99.9%;
+    height: 100%;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    font-size: 1.0em;
+}
+
+#wrapper::-webkit-scrollbar {
+    width: 8px;
+    height: 10px;
+    -webkit-transition: all .45s ease-in;
+    position: relative;
+}
+#wrapper::-webkit-scrollbar-button:start:decrement, #wrapper::-webkit-scrollbar-button:end:increment {
+    height: 0px;
+    display: block;
+    background-color: transparent;
+}
+#wrapper::-webkit-scrollbar-track-piece {
+    background-color:
+    transparent;
+    -webkit-border-radius: 6px;
+}
+#wrapper::-webkit-scrollbar-thumb:vertical {
+    height: 50px;
+    background-color: #c8c8c8;
+    -webkit-border-radius: 6px;
+    -webkit-transition: all .45s ease-in;
+}
+
+#content {
+    width: 610px;
+    margin: 0 auto 0 auto;
+    padding: 30px 0 30px 0;
+}
+
+/**
+ *
+    Headings
+ *
+ */
+
+h1, h2, h3, h4, h5, h6 {
+    text-rendering: optimizeLegibility;
+    line-height: 1;
+    margin: 0.5rem 0;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    text-rendering: optimizeLegibility;
+    line-height: 1;
+    margin: 0.5rem 0;
+}
+
+h1, 
+h2, 
+h3 { margin-bottom: 1rem; }
+
+h1 { font-size: 2.75rem; }
+h2 { font-size: 2.25rem; }
+h3 { font-size: 1.75rem; }
+h4 { font-size: 1.25rem; }
+h5 { font-size: 1.00rem; }
+h6 { font-size: 0.85rem; }
+
+/**
+ *
+	Paragraphs
+ *
+ */
+
+p {
+	margin: 0 0 1.5em;
+}
+
+/**
+ *
+    Block quotes
+ *
+ */
+
+blockquote {
+    margin: 0 0 1.5em;
+    width: 96%;
+    padding: 0 10px;
+    border-left: 3px solid #ddd;
+    color: #777;
+}
+
+/**
+ *
+	Code Blocks
+ *
+ */
+
+pre code {
+	word-wrap: normal;
+	white-space: pre-wrap;
+    border: none;
+    padding: 0;
+    background-color: transparent;
+    -webkit-border-radius: 0;
+}
+
+pre {
+	white-space: pre-wrap;
+    width: 96%;
+    margin-bottom: 24px;
+    overflow: hidden;
+    padding: 3px 10px;
+    -webkit-border-radius: 3px;
+    background-color: #eee;
+    border: 1px solid #ddd;
+}
+
+code {
+	white-space: nowrap;
+	font-family: monospace;
+    padding: 2px;
+    -webkit-border-radius: 3px;
+    background-color: #eee;
+    border: 1px solid #ddd;
+}
+
+small {
+	font-size: 65%;
+}
+
+/**
+ *
+    Dictionary Definition
+ *
+ */
+
+dt {
+	display: inline;
+    font-weight:bold;
+}
+
+dd {
+	display: block;
+}
+
+/**
+ *
+    Anchors
+ *
+ */
+
+a {
+    color: #308bd8;
+    text-decoration:none;
+}
+a:hover {
+    text-decoration: underline;
+}
+
+/**
+ *
+    Horizontal rules
+ *
+ */
+
+hr {
+    width: 100%;
+    margin: 3em auto;
+    border: 0;
+    color: #eee;
+    background-color: #ccc;
+    height: 1px;
+    -webkit-box-shadow:0px 1px 0px rgba(255, 255, 255, 0.75);
+}
+
+/**
+ *
+    Lists
+ *
+ */
+
+ol, ul {
+    list-style-position: outside;
+    padding-left: 0;
+    margin-left: 1.5em;
+}
+
+ol li, ul li {
+    text-align: -webkit-match-parent;
+}
+
+li p {
+    margin: 0.5em 0 0.5em;
+}
+
+ol ol, ol ul, ul ul, ul ol {
+    padding-left: 1.5em;
+}
+
+/**
+ *
+    Tables
+ *
+ */
+
+table {
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 24px;
+    border-bottom: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+    border-spacing: 0;
+}
+
+table th {
+    padding: 3px 10px;
+    background-color: #eee;
+    border-top: 1px solid #ddd;
+    border-left: 1px solid #ddd;
+}
+
+table tr {
+}
+
+table td {
+    padding: 3px 10px;
+    border-top: 1px solid #ddd;
+    border-left: 1px solid #ddd;
+}
+
+/**
+ *
+    Images
+ *
+ */
+
+img {
+    border: none;
+    display: block;
+    margin: 1em auto;
+    max-width: 100%;
+}
+
+/**
+ *
+    Marks
+ *
+ */
+
+mark {
+    background: #fefec0;
+    padding:1px 3px;
+}
+
+/**
+ *
+    Footnotes
+ *
+ */
+.footnote {
+    font-size: 0.8rem;
+    vertical-align: super;
+}
+.footnotes ol {
+    font-weight: bold;
+}
+.footnotes ol li {
+    text-align: -webkit-match-parent;
+}
+
+.footnotes ol li p {
+    font-weight: normal;
+}
+
+/**
+ *
+    Figures and Captions
+ *
+ */
+caption {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+figure {
+    display: block;
+    text-align: center;
+}
+
+figcaption {
+    font-size: 0.8rem;
+    font-style: italic;
+}
+
+/**
+ *
+    Custom classes
+ *
+ */
+
+.shadow {
+    -webkit-box-shadow: 0 2px 4px #999;
+}
+
+.source {
+    text-align: center;
+    font-size: 0.8em;
+    color: #777;
+    margin: -40px auto;
+}
+#wrapper {
+    width: 99.9%;
+}
+#content {
+    width: 610px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Mobile support */
+@media only screen and (max-device-width:1024px) {
+    html {
+        overflow: auto;
+    }
+
+    #wrapper {
+        overflow: auto;
+        position: relative;
+    }
+}/* html elements */
+
+body {
+    background-color: #1a1a1a;
+    color: #bebebe;
+}
+a {
+    color: #308bd8;
+}
+hr {
+    color: #666;
+    background-color: #666;
+    -webkit-box-shadow: none;
+}
+pre {
+    background-color: #222;
+    border-color: #3c3c3c;
+}
+code {
+    background-color: #222;
+    border-color: #3c3c3c;
+}
+blockquote {
+    border-color: #333;
+    color: #999;
+}
+table {
+    border-color: #3c3c3c;
+}
+table th {
+    background-color: #222;
+    border-color: #3c3c3c;
+}
+table td {
+    border-color: #3c3c3c;
+}
+mark {
+    background: #bc990b;
+    color:#000;
+}
+
+/* unique elements */
+
+#wrapper::-webkit-scrollbar-thumb:vertical {
+    background-color: #525252;
+}
+#top-fader {
+    background: -webkit-gradient(linear, left top, left bottom, from(rgba(26,26,26,1)), to(rgba(26,26,26,0)));
+}
+#bottom-fader {
+    background: -webkit-gradient(linear, left bottom, left top, from(rgba(26,26,26,1)), to(rgba(26,26,26,0)));
+}
+
+/* custom formatting classes */
+
+.shadow {
+    -webkit-box-shadow: 0 2px 4px #000;
+}@media print {
+/* Printing support.
+ * Override all printing colors to match the Light theme.
+ */
+img, pre, blockquote, table, figure {
+    page-break-inside: avoid;
+}
+body {
+    background-color:#fff;
+}
+#wrapper {
+    position: static;
+    overflow: hidden;
+    color: #000;
+    width: 100%;
+    margin: 0 auto;
+}
+.footnotes {
+    page-break-before: always;
+}
+#content {
+    margin: 0 auto;
+    padding: 0;
+    width: 98%;
+}
+#top-fader, #bottom-fader {
+    display: none;
+}
+hr {
+    color:#ddd;
+    background-color:#ddd;
+    -webkit-box-shadow:0px 1px 0px #ddd;
+}
+pre {
+    background-color:transparent;
+    border: 1px solid #ddd;
+}
+code {
+    background-color:transparent;
+    border: 1px solid #ddd;
+}
+blockquote {
+    border-left: 3px solid #ddd;
+    color: #000;
+}
+ol {
+    /*
+     * Override the list style when printing to ensure list
+     * markers won't get cut.
+     */
+    list-style-position: inside;
+    padding-left: 0;
+    margin-left: 0;
+}
+table {
+    border-bottom: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+}
+table th {
+    background-color:transparent;
+    border-top: 1px solid #ddd;
+    border-left: 1px solid #ddd;
+}
+table td {
+    border-top: 1px solid #ddd;
+    border-left: 1px solid #ddd;
+}
+mark {
+    background:transparent;
+    color: #000;
+}
+.source {
+    color: #000;
+}
+}
+  </style>
+</head>
+<body>
+  <div id="wrapper">
+    <div id="content">
+<h1>PocMan</h1>
+
+<h2>0 - Introduction</h2>
+
+<p>La seconde partie du module Info215 se concentre sur l&#8217;apprentissage par renforcement, qui, à la différence de l&#8217;apprentissage supervisé, nous permet de créer un agent conscient du monde dans lequel il évolue, sans connaitre de stratégies a priori. Ce système d&#8217;intelligence artificielle convient parfaitement dans le cadre du développement d&#8217;un jeu vidéo.
+Ainsi, comme proposé par le sujet, nous allons écrire un algorithme d&#8217;apprentissage par renforcement ayant pour but de maitriser un jeu PacMan sans connaissances autres que l&#8217;environnement.</p>
+
+<p>On commence donc par développer l&#8217;implémentation de l&#8217;intelligence artificielle, puis l&#8217;agrégation et l&#8217;analyse des données issues de la simulation.</p>
+
+<h2>1 - Implémentation de l&#8217;intelligence artificielle</h2>
+
+<p>La majeure partie de l&#8217;implémentation se fait dans une classe <code>QLearn</code>. L&#8217;objectif de cette classe est de déterminer la meilleure action à effectuer par l&#8217;agent (ici PacMan) en fonction de son environnement.<br>
+On adopte une stratégie ε-greedy : avec une probabilité ε, on choisit la meilleure action à effectuer (et une action au hasard dans l&#8217;autre cas). On fait de plus évoluer ε en fonction de l&#8217;age du monde à l&#8217;aide d&#8217;une fonction particulière (on peut la considérer comme un hyperparamètre) :
+<span class="math">\(x \to \sigma \left( \frac{ln \left ( x\right )}{2} - 6\right )\)</span> </p>
+
+<p>On choisit d&#8217;implémenter deux méthodes de mise-à-jour de la fonction Q (l&#8217;estimateur de la meilleure action) :</p>
+
+<ul>
+<li>Q-Learning implémentée dans <code>void learn(int st, int at, int st1, double r)</code></li>
+<li>SARSA implémentée dans <code>void learn(int st, int at, int st1, int at1, double r)</code></li>
+</ul>
+
+<p>Dans les deux cas, on construit un objet <code>HashMap</code> qui, à chaque environnement associe une <code>ArrayList</code> de probabilités associées a chaque action possible.</p>
+
+<p>Enfin, pour utiliser les données accumulées, on implémente un mécanisme de choix de la meilleure action dans <code>Tuple&lt;Integer, Double&gt; bestAction(int state)</code>. Cela revient à coder une fonction maximum, avec les particularités de parcourir une <code>HashMap</code>, ainsi que d&#8217;avoir des données négatives.</p>
+
+<h2>2 - Résultats de simulation</h2>
+
+<h3>A - Support</h3>
+
+<p>Afin d&#8217;analyser le processus d&#8217;apprentissage, nous mettons en place un système de sauvegarde des variables représentatives de chaque simulation dans un fichier. On exploite ensuite ces fichiers à l&#8217;aide d&#8217;un script écrit en Python : ce dernier permet de convertir les chiffres bruts en graphiques dans le format PNG. Nous visualisons les données à l&#8217;aide de la bibliothèque Matplotlib.
+On ajoute la possibilité de réduire le bruit des données, afin de lisser le rendu graphique. Pour ce faire, on calcule la moyenne glissante sur le jeu de données que l&#8217;on a recueilli, finalement c&#8217;est celle-ci que l&#8217;on trace. </p>
+
+<table>
+<colgroup>
+<col style="text-align:center;"/>
+<col style="text-align:center;"/>
+</colgroup>
+
+<thead>
+<tr>
+	<th style="text-align:center;">Avant</th>
+	<th style="text-align:center;">Après</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+	<td style="text-align:center;"><img src="./output/not_smoothen.png" alt="" /></td>
+	<td style="text-align:center;"><img src="./output/smoothen.png" alt="" /></td>
+</tr>
+</tbody>
+</table>
+
+<h3>B - Paramètres</h3>
+
+<p>Nous avons fait le choix de faire jouer dix millions de parties à notre programme et sauver les indicateurs toutes les cinq mille parties.
+Nous choisissons de plus de modifier les récompenses données pour réduire l&#8217;ampleur des nombres manipulés par le programme :</p>
+
+<pre><code class="java">private double r_ghost = -20;
+private double r_food  = 10;
+private double r_stuck = -5;
+private double r_nothing = -1;
+</code></pre>
+
+<h3>C - Données</h3>
+
+<p>Pour contrôler le progrès de l&#8217;apprentissage, nous avons donc recueilli le nombre de morts, de récompenses et de murs rencontrés, on peut alors tracer un graphique des trois grandeurs en fonction du nombre de parties.</p>
+
+<p>On obtient les graphiques suivants : </p>
+
+<p><img src="./output/none.png" alt="Fig. 3: Random play" /> <img src="./output/SARSA.png" alt="Fig. 4: SARSA Learning" /> <img src="./output/QLearning.png" alt="Fig. 5: Q-Learning" /></p>
+
+<h3>D - Analyse</h3>
+
+<p>Dans le premier cas, on remarque premièrement l&#8217;ampleur des parties perdues et des murs rencontrés face au nombre de nourriture gagnées, de plus, il n&#8217;y a que relativement peu de fluctuations autour d&#8217;une même valeur.
+Dans les cas où l&#8217;on utilise l&#8217;apprentissage par renforcement, on voit très clairement que le nombre de morts et de murs rencontrés décroit fortement, alors que le nombre de nourritures perçues augmente. On en conclut que l&#8217;apprentissage est (très) efficace par rapport a une marche aléatoire.
+De plus, il existe une différence notable entre les méthodes SARSA et Q-Learning, la dernière se montre plus efficace (elle converge vers 40 morts par époque contrairement à 60 pour SASRA, On obtient aussi de meilleurs scores pour les autres indicateurs).</p>
+
+<h2>3 - Conclusion</h2>
+
+<p>Nous avons finalement implanté un algorithme d&#8217;apprentissage par renforcement permettant à PacMan de tromper les fantômes sans savoir a priori comment les éviter.</p>
+    </div>
+  </div> <!-- End wrapper -->
+</body>
+</html>

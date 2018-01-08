@@ -68,11 +68,10 @@ def smooth_out(dataset, mean_radius):
 
 
 if __name__ == '__main__':
-    
-    # qlearn = parse_file("QLearning")
-    # sarsa = parse_file("SARSA")
-    # rnd = parse_file("none")
-    #
-    # plot_data(qlearn, "QLearning")
-    # plot_data(sarsa, "SARSA")
-    # plot_data(rnd, "none")
+    qlearn = parse_file("QLearning")
+    sarsa = parse_file("SARSA")
+    rnd = parse_file("none")
+
+    plot_data(qlearn, "QLearning")
+    plot_data(sarsa, "SARSA")
+    plot_data(rnd, "none")
